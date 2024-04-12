@@ -1,1 +1,1 @@
-# Journet-to-arcane
+# Journey-to-arcane
