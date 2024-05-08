@@ -16,12 +16,32 @@ public class PlayerController : MonoBehaviour
     //public AudioSource landingSound;
     private float move;
     public float maxSpeed;
+    public float groundCheckRadius;
     bool facingRight;
-
+    
     public Transform groundCheck;
     public LayerMask groundLayer;
-    bool isJumping;
+    bool isJumping = false;
     float jumpCounter;
+
+    //dash
+    private bool isDashing;
+    private float dashTimeLeft;
+    private float lastImageXpos;
+    private float lastDash = -100f;
+    public float dashTime;
+    public float dashSpeed;
+    public float distanceBetweenImages;
+    public float dashCoolDown;
+
+    [Header("Wall Jump System")]
+
+    public Transform wallCheck;
+    bool isSliding;
+    public float wallSlidingSpeed;
+    public float wallJumpDuration;
+    public Vector2 wallJumpForce;
+    bool wallJumping;
 
     private Rigidbody2D myBody;
     private Animator myAnim;
@@ -40,6 +60,7 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         CheckInput();
+        CheckDash();
     }
 
     private void FixedUpdate()
@@ -57,11 +78,20 @@ public class PlayerController : MonoBehaviour
             myAnim.SetBool("isMove", false);
 
         Jump();
+        WallJump();
+        
         
     }
+
     private void CheckInput()
     {
         move = Input.GetAxisRaw("Horizontal");
+
+        if(Input.GetButtonDown("Dash"))
+        {
+            if(Time.time >= (lastDash + dashCoolDown))
+            AttempToDash();
+        }
     }
 
     private void Movement()
@@ -82,11 +112,15 @@ public class PlayerController : MonoBehaviour
 
     private void Jump()
     {
-        if(Input.GetKeyDown(KeyCode.Space) && isGrounded())
+        if(Input.GetKeyDown(KeyCode.Space) && isGrounded() && !isJumping)
         {
             myBody.velocity = new Vector2(myBody.velocity.x, jumpHeight);
             isJumping = true;
             jumpCounter = 0;
+        }else if (isSliding)
+        {
+            // wallJumping = true;
+            // Invoke("StopWallJump", wallJumpDuration);
         }
 
         if(myBody.velocity.y>0 && isJumping)
@@ -120,6 +154,68 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    private void WallJump()
+    {
+        if(isWallTouch() && !isGrounded() && move != 0)
+        {
+            isSliding = true;
+        }else
+        {
+            isSliding = false;
+        }
+
+        if(isSliding)
+        {
+            myBody.velocity = new Vector2(myBody.velocity.x, Mathf.Clamp(myBody.velocity.y, -wallSlidingSpeed, float.MaxValue));
+        }
+
+        // if(wallJumping)
+        // {
+        //     myBody.velocity = new Vector2(-move * wallJumpForce.x, wallJumpForce.y);
+        // }
+        // else
+        // {
+        //     myBody.velocity = new Vector2(move*maxSpeed, myBody.velocity.y);
+        // }
+    }
+
+    // private void StopWallJump()
+    // {
+    //     wallJumping = false;
+    // }
+
+    private void AttempToDash()
+    {
+        isDashing = true;
+        dashTimeLeft = dashTime;
+        lastDash = Time.time;
+
+        PlayerAfterImagePool.Instance.GetFromPool();
+        lastImageXpos = transform.position.x;
+    }
+
+    private void CheckDash()
+    {
+        if(isDashing)
+        {
+            if(dashTimeLeft>0)
+            {
+                myBody.velocity = new Vector2(dashSpeed, myBody.velocity.y);
+                dashTimeLeft -= Time.deltaTime;
+
+                if(Mathf.Abs(transform.position.x - lastImageXpos) > distanceBetweenImages)
+                {
+                    PlayerAfterImagePool.Instance.GetFromPool();
+                    lastImageXpos = transform.position.x;
+                }
+            }
+            if(dashTimeLeft <= 0 || isWallTouch())
+            {
+                isDashing =false;
+            }
+        }
+    }
+
     void flip(){
         facingRight = !facingRight;
         Vector3 theScale = transform.localScale;
@@ -129,7 +225,16 @@ public class PlayerController : MonoBehaviour
 
     bool isGrounded()
     {
-        return Physics2D.OverlapCapsule(groundCheck.position, new Vector2(1.8f, 0.3f), CapsuleDirection2D.Horizontal, 0, groundLayer);
+        return Physics2D.OverlapCapsule(groundCheck.position, new Vector2(1.5f, 0.3f), CapsuleDirection2D.Horizontal, 0, groundLayer);
+    }
+
+    bool isWallTouch()
+    {
+        return Physics2D.OverlapBox(wallCheck.position, new Vector2(0.4f, 1.6f), 0, groundLayer);
+    }
+
+    private void OnDrawGizmos() {
+        Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius)  ;
     }
 
     IEnumerator Co_CoyoteTimer()

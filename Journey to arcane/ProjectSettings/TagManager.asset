@@ -48,6 +48,9 @@ TagManager:
   - name: Decorations
     uniqueID: 1732893997
     locked: 0
+  - name: Grounds
+    uniqueID: 3206650519
+    locked: 0
   - name: Platforms
     uniqueID: 478441457
     locked: 0
