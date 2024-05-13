@@ -59,6 +59,7 @@ public class PlayerController : MonoBehaviour
     {
         CheckInput();
         CheckDash();
+        Jump();
     }
 
     private void FixedUpdate()
@@ -70,15 +71,16 @@ public class PlayerController : MonoBehaviour
             flip();
         }
 
-        if(myBody.velocity.x !=0)
+        if (myBody.velocity.x != 0)
             myAnim.SetBool("isMove", true);
         else
+        {
             myAnim.SetBool("isMove", false);
-
-        Jump();
+            myAnim.SetBool("isRun", false);
+        }
         WallJump();
-        
-        
+
+        myAnim.SetFloat("yVelocity", myBody.velocity.y);
     }
 
     private void CheckInput()
@@ -110,11 +112,12 @@ public class PlayerController : MonoBehaviour
 
     private void Jump()
     {
-        if(Input.GetKeyDown(KeyCode.Space) && isGrounded() && !isJumping)
+        if(Input.GetKeyDown(KeyCode.Space) && isGrounded())
         {
             myBody.velocity = new Vector2(myBody.velocity.x, jumpHeight);
             isJumping = true;
             jumpCounter = 0;
+            myAnim.SetBool("isJump", true);
         }
 
         if(myBody.velocity.y>0 && isJumping)
@@ -142,7 +145,7 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        if(myBody.velocity.y < 0)
+        if (myBody.velocity.y < 0)
         {
             myBody.velocity -= vecGravity * fallSpeed * Time.deltaTime;
         }

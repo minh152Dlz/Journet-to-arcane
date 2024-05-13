@@ -233,7 +233,7 @@ InputManager:
     m_Name: Jump
     descriptiveName: 
     descriptiveNegativeName: 
-    negativeButton: 
+    negativeButton: space
     positiveButton: joystick button 3
     altNegativeButton: 
     altPositiveButton: 
