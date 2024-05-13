@@ -39,9 +39,7 @@ public class PlayerController : MonoBehaviour
     public Transform wallCheck;
     bool isSliding;
     public float wallSlidingSpeed;
-    public float wallJumpDuration;
-    public Vector2 wallJumpForce;
-    bool wallJumping;
+    
 
     private Rigidbody2D myBody;
     private Animator myAnim;
@@ -117,10 +115,6 @@ public class PlayerController : MonoBehaviour
             myBody.velocity = new Vector2(myBody.velocity.x, jumpHeight);
             isJumping = true;
             jumpCounter = 0;
-        }else if (isSliding)
-        {
-            // wallJumping = true;
-            // Invoke("StopWallJump", wallJumpDuration);
         }
 
         if(myBody.velocity.y>0 && isJumping)
@@ -130,7 +124,7 @@ public class PlayerController : MonoBehaviour
 
             float t =  jumpCounter / jumpTime;
             float currentJumpB = jumpBuffer;
-            if(t>0.5)
+            if(t>0.5f)
             {
                 currentJumpB = jumpBuffer * (1-t);
             }
@@ -156,7 +150,7 @@ public class PlayerController : MonoBehaviour
 
     private void WallJump()
     {
-        if(isWallTouch() && !isGrounded() && move != 0)
+        if(isWallTouch()  && move != 0)
         {
             isSliding = true;
         }else
@@ -166,23 +160,10 @@ public class PlayerController : MonoBehaviour
 
         if(isSliding)
         {
+
             myBody.velocity = new Vector2(myBody.velocity.x, Mathf.Clamp(myBody.velocity.y, -wallSlidingSpeed, float.MaxValue));
         }
-
-        // if(wallJumping)
-        // {
-        //     myBody.velocity = new Vector2(-move * wallJumpForce.x, wallJumpForce.y);
-        // }
-        // else
-        // {
-        //     myBody.velocity = new Vector2(move*maxSpeed, myBody.velocity.y);
-        // }
     }
-
-    // private void StopWallJump()
-    // {
-    //     wallJumping = false;
-    // }
 
     private void AttempToDash()
     {
@@ -237,9 +218,4 @@ public class PlayerController : MonoBehaviour
         Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius)  ;
     }
 
-    IEnumerator Co_CoyoteTimer()
-    {
-        yield return new WaitForSecondsRealtime(0.1f);
-        //grounded = false;
-    }
 }
