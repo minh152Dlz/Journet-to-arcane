@@ -116,11 +116,13 @@ public class PlayerController : MonoBehaviour
         {
             myBody.velocity = new Vector2(myBody.velocity.x, jumpHeight);
             isJumping = true;
-            jumpCounter = 0;
+            jumpCounter = 0;     
             myAnim.SetBool("isJump", true);
+
         }
 
-        if(myBody.velocity.y>0 && isJumping)
+
+        if (myBody.velocity.y>0 && isJumping)
         {
             jumpCounter += Time.deltaTime;
             if(jumpCounter > jumpTime)  isJumping = false;
@@ -148,6 +150,11 @@ public class PlayerController : MonoBehaviour
         if (myBody.velocity.y < 0)
         {
             myBody.velocity -= vecGravity * fallSpeed * Time.deltaTime;
+        }
+
+        if (isGrounded())
+        {
+            myAnim.SetBool("isJump", false);
         }
     }
 
@@ -217,8 +224,11 @@ public class PlayerController : MonoBehaviour
         return Physics2D.OverlapBox(wallCheck.position, new Vector2(0.4f, 1.6f), 0, groundLayer);
     }
 
-    private void OnDrawGizmos() {
-        Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius)  ;
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
     }
+
+
 
 }

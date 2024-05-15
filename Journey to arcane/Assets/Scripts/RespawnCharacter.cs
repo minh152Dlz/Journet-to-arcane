@@ -5,11 +5,11 @@ using UnityEngine.UI;
 public class RespawnCharacter : MonoBehaviour
 {
     Vector2 startPos;
-    Rigidbody2D playerRb;
+    Rigidbody2D myBody;
 
     public Text txtdeath;
     public int deathCount = 0;
-    public Animator myanim;
+    public Animator myAnim;
     public AudioSource respawnSound;
     public AudioSource deathSound;
 
@@ -18,8 +18,8 @@ public class RespawnCharacter : MonoBehaviour
     private void Awake()
     {
         //playerability = GetComponent<PlayerAbility>();
-        playerRb = GetComponent<Rigidbody2D>();
-        myanim = GetComponent<Animator>();
+        myBody = GetComponent<Rigidbody2D>();
+        myAnim = GetComponent<Animator>();
     }
 
     private void Start()
@@ -39,10 +39,10 @@ public class RespawnCharacter : MonoBehaviour
     {
         //myanim.SetTrigger("white");
         //deathSound.Play();
-        //myanim.SetTrigger("death");
+        myAnim.SetTrigger("death");
         //if (playerability.check)
         //{
-        //    StartCoroutine(Respawn(1.5f));
+        StartCoroutine(Respawn(1.5f));
         //}
         //else
         //{
@@ -53,17 +53,17 @@ public class RespawnCharacter : MonoBehaviour
 
     IEnumerator Respawn(float duration)
     {
-        playerRb.simulated = false;
-        playerRb.velocity = Vector2.zero;
+        myBody.simulated = false;
+        myBody.velocity = Vector2.zero;
 
         yield return new WaitForSeconds(duration);
-        deathCount++;
-        txtdeath.text = deathCount.ToString();
+        //deathCount++;
+        //txtdeath.text = deathCount.ToString();
 
-        myanim.SetTrigger("alive");
-
+        myAnim.SetTrigger("alive");
+       
         transform.position = startPos;
-        playerRb.simulated = true;
+        myBody.simulated = true;
         //respawnSound.Play();
     }
 }
