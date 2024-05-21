@@ -25,6 +25,7 @@ public class PlayerController : MonoBehaviour
     float jumpCounter;
 
     //dash
+    private bool canDash = true;
     private bool isDashing;
     private float dashTimeLeft;
     private float lastImageXpos;
@@ -33,6 +34,7 @@ public class PlayerController : MonoBehaviour
     public float dashSpeed;
     public float distanceBetweenImages;
     public float dashCoolDown;
+    [SerializeField] private TrailRenderer tr;
 
     [Header("Wall Jump System")]
 
@@ -57,13 +59,25 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        if (isDashing)
+        {
+            return;
+        }
         CheckInput();
         CheckDash();
         Jump();
+        if (Input.GetButtonDown("Dash") && canDash)
+        {
+            StartCoroutine(Dash());
+        }
     }
 
     private void FixedUpdate()
     {
+        if (isDashing)
+        {
+            return;
+        }
         Movement();
         if(move>0 && !facingRight){
             flip();
@@ -175,6 +189,21 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    private IEnumerator Dash()
+    {
+        canDash = false;
+        isDashing = true;
+        float originalGravity = myBody.gravityScale;
+        myBody.gravityScale = 0f;
+        myBody.velocity = new Vector2(transform.localScale.x * dashSpeed, 0f);
+        tr.emitting = true;
+        yield return new WaitForSeconds(dashTime);
+        tr.emitting = false;
+        myBody.gravityScale = originalGravity;
+        isDashing = false;
+        yield return new WaitForSeconds(dashCoolDown);
+        canDash = true;
+    }
     private void AttempToDash()
     {
         isDashing = true;
@@ -191,7 +220,8 @@ public class PlayerController : MonoBehaviour
         {
             if(dashTimeLeft>0)
             {
-                myBody.velocity = new Vector2(dashSpeed, myBody.velocity.y);
+                float dashDirection = facingRight ? 1 : -1;
+                myBody.velocity = new Vector2(dashSpeed * dashDirection, myBody.velocity.y);
                 dashTimeLeft -= Time.deltaTime;
 
                 if(Mathf.Abs(transform.position.x - lastImageXpos) > distanceBetweenImages)
