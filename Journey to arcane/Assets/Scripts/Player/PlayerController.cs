@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -29,7 +29,7 @@ public class PlayerController : MonoBehaviour
     private bool isDashing;
     private float dashTimeLeft;
     private float lastImageXpos;
-    private float lastDash = -100f;
+    //private float lastDash = -100f;
     public float dashTime;
     public float dashSpeed;
     public float distanceBetweenImages;
@@ -64,7 +64,6 @@ public class PlayerController : MonoBehaviour
             return;
         }
         CheckInput();
-        CheckDash();
         Jump();
         if (Input.GetButtonDown("Dash") && canDash)
         {
@@ -78,34 +77,34 @@ public class PlayerController : MonoBehaviour
         {
             return;
         }
-        Movement();
-        if(move>0 && !facingRight){
-            flip();
-        }else if (move<0 && facingRight){
-            flip();
-        }
+       
+            Movement();
+            if (move > 0 && !facingRight)
+            {
+                flip();
+            }
+            else if (move < 0 && facingRight)
+            {
+                flip();
+            }
 
-        if (myBody.velocity.x != 0)
-            myAnim.SetBool("isMove", true);
-        else
-        {
-            myAnim.SetBool("isMove", false);
-            myAnim.SetBool("isRun", false);
-        }
-        WallJump();
+            if (myBody.velocity.x != 0)
+                myAnim.SetBool("isMove", true);
+            else
+            {
+                myAnim.SetBool("isMove", false);
+                myAnim.SetBool("isRun", false);
+            }
+            WallJump();
 
-        myAnim.SetFloat("yVelocity", myBody.velocity.y);
+            myAnim.SetFloat("yVelocity", myBody.velocity.y);
+ 
     }
 
     private void CheckInput()
     {
         move = Input.GetAxisRaw("Horizontal");
 
-        if(Input.GetButtonDown("Dash"))
-        {
-            if(Time.time >= (lastDash + dashCoolDown))
-            AttempToDash();
-        }
     }
 
     private void Movement()
@@ -195,46 +194,35 @@ public class PlayerController : MonoBehaviour
         isDashing = true;
         float originalGravity = myBody.gravityScale;
         myBody.gravityScale = 0f;
-        myBody.velocity = new Vector2(transform.localScale.x * dashSpeed, 0f);
+
+        float dashDirection = facingRight ? 1 : -1;
+        myBody.velocity = new Vector2(dashDirection * dashSpeed, 0f);
         tr.emitting = true;
-        yield return new WaitForSeconds(dashTime);
+
+        dashTimeLeft = dashTime;
+        lastImageXpos = transform.position.x;
+
+        while (dashTimeLeft > 0)
+        {
+            myBody.velocity = new Vector2(dashSpeed * dashDirection, 0f);
+            dashTimeLeft -= Time.deltaTime;
+
+            if (Mathf.Abs(transform.position.x - lastImageXpos) > distanceBetweenImages)
+            {
+                PlayerAfterImagePool.Instance.GetFromPool();
+                lastImageXpos = transform.position.x;
+            }
+
+            yield return null;
+        }
+
         tr.emitting = false;
         myBody.gravityScale = originalGravity;
         isDashing = false;
+        myBody.velocity = Vector2.zero;
+
         yield return new WaitForSeconds(dashCoolDown);
         canDash = true;
-    }
-    private void AttempToDash()
-    {
-        isDashing = true;
-        dashTimeLeft = dashTime;
-        lastDash = Time.time;
-
-        PlayerAfterImagePool.Instance.GetFromPool();
-        lastImageXpos = transform.position.x;
-    }
-
-    private void CheckDash()
-    {
-        if(isDashing)
-        {
-            if(dashTimeLeft>0)
-            {
-                float dashDirection = facingRight ? 1 : -1;
-                myBody.velocity = new Vector2(dashSpeed * dashDirection, myBody.velocity.y);
-                dashTimeLeft -= Time.deltaTime;
-
-                if(Mathf.Abs(transform.position.x - lastImageXpos) > distanceBetweenImages)
-                {
-                    PlayerAfterImagePool.Instance.GetFromPool();
-                    lastImageXpos = transform.position.x;
-                }
-            }
-            if(dashTimeLeft <= 0 || isWallTouch())
-            {
-                isDashing =false;
-            }
-        }
     }
 
     void flip(){
