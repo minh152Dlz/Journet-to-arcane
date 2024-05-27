@@ -1,4 +1,4 @@
-using System;
+    using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,6 +8,7 @@ using UnityEngine.SceneManagement;
 public class LevelMenu : MonoBehaviour
 {
     public Button[] buttons;
+    //public Image[] stars;
 
     private void Awake()
     {

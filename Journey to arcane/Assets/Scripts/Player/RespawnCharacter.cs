@@ -1,5 +1,7 @@
 using System.Collections;
+using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class RespawnCharacter : MonoBehaviour
@@ -7,12 +9,11 @@ public class RespawnCharacter : MonoBehaviour
     Vector2 startPos;
     Rigidbody2D myBody;
 
-    public Text txtdeath;
-    public int deathCount = 0;
+    public TextMeshProUGUI txtLives;
     public Animator myAnim;
     public AudioSource respawnSound;
     public AudioSource deathSound;
-
+    SceneController sceneController;
     //PlayerAbility playerability;
 
     private void Awake()
@@ -24,7 +25,9 @@ public class RespawnCharacter : MonoBehaviour
 
     private void Start()
     {
+        sceneController = SceneController.instance;
         startPos = transform.position;
+        UpdateLivesText();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -40,11 +43,16 @@ public class RespawnCharacter : MonoBehaviour
         //myanim.SetTrigger("white");
         //deathSound.Play();
         myAnim.SetTrigger("death");
-        //if (playerability.check)
-        //{
-        StartCoroutine(Respawn(1.5f));
-        //}
-        //else
+        if (sceneController.lives > 0)
+        {
+            sceneController.DecreaseLife();
+            UpdateLivesText();
+            StartCoroutine(Respawn(1.5f));
+        }
+        else
+        {
+            GameOver();
+        }
         //{
         //    gameObject.GetComponent<PlayerController>().enabled = false;
         //    playerability.playerPrefab.GetComponent<PlayerController>().enabled = true;
@@ -57,13 +65,24 @@ public class RespawnCharacter : MonoBehaviour
         myBody.velocity = Vector2.zero;
 
         yield return new WaitForSeconds(duration);
-        //deathCount++;
-        //txtdeath.text = deathCount.ToString();
-
+        
         myAnim.SetTrigger("alive");
        
         transform.position = startPos;
         myBody.simulated = true;
         //respawnSound.Play();
+    }
+
+    private void GameOver()
+    {
+        SceneManager.LoadScene("GameOver");
+    }
+
+    private void UpdateLivesText()
+    {
+        if (txtLives != null)
+        {
+            txtLives.text = sceneController.lives.ToString();
+        }
     }
 }

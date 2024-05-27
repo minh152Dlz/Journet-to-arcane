@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -6,10 +6,11 @@ public class SceneController : MonoBehaviour
 {
     public static SceneController instance;
     [SerializeField] Animator transitionAnim;
+    public int lives { get; private set; }
 
-    public void Awake()
+    private void Awake()
     {
-        if(instance == null)
+        if (instance == null)
         {
             instance = this;
             DontDestroyOnLoad(gameObject);
@@ -20,9 +21,27 @@ public class SceneController : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        InitializeLives();
+    }
+
+    private void InitializeLives()
+    {
+        lives = 3;
+    }
+
     public void NextLevel()
     {
         StartCoroutine(LoadLevel());
+    }
+
+    public void DecreaseLife()
+    {
+        if (lives > 0)
+        {
+            lives--;
+        }
     }
 
     IEnumerator LoadLevel()
@@ -31,11 +50,18 @@ public class SceneController : MonoBehaviour
         yield return new WaitForSeconds(1);
         SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex + 1);
         transitionAnim.SetTrigger("Start");
-
     }
 
-    public void LoadScene( string sceneName)
+    public void LoadScene(string sceneName)
     {
-        SceneManager.LoadSceneAsync(sceneName);
+        StartCoroutine(LoadSceneAsync(sceneName));
+    }
+
+    private IEnumerator LoadSceneAsync(string sceneName)
+    {
+        transitionAnim.SetTrigger("End");
+        yield return new WaitForSeconds(1);
+        SceneManager.LoadSceneAsync(sceneName).completed += (AsyncOperation op) => InitializeLives();
+        transitionAnim.SetTrigger("Start");
     }
 }
