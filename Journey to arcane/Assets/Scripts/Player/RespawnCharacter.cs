@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class RespawnCharacter : MonoBehaviour
 {
+    public static RespawnCharacter instance;
     Vector2 startPos;
     Rigidbody2D myBody;
 
@@ -18,6 +19,10 @@ public class RespawnCharacter : MonoBehaviour
 
     private void Awake()
     {
+        if (instance == null)
+        {
+            instance = this;
+        }
         //playerability = GetComponent<PlayerAbility>();
         myBody = GetComponent<Rigidbody2D>();
         myAnim = GetComponent<Animator>();
@@ -45,8 +50,6 @@ public class RespawnCharacter : MonoBehaviour
         myAnim.SetTrigger("death");
         if (sceneController.lives > 0)
         {
-            sceneController.DecreaseLife();
-            UpdateLivesText();
             StartCoroutine(Respawn(1.5f));
         }
         else
@@ -67,7 +70,8 @@ public class RespawnCharacter : MonoBehaviour
         yield return new WaitForSeconds(duration);
         
         myAnim.SetTrigger("alive");
-       
+        sceneController.DecreaseLife();
+
         transform.position = startPos;
         myBody.simulated = true;
         //respawnSound.Play();
@@ -78,11 +82,15 @@ public class RespawnCharacter : MonoBehaviour
         SceneManager.LoadScene("GameOver");
     }
 
-    private void UpdateLivesText()
+    public void UpdateLivesText()
     {
         if (txtLives != null)
         {
             txtLives.text = sceneController.lives.ToString();
+        }
+        else
+        {
+            Debug.Log("nuldsdas");
         }
     }
 }

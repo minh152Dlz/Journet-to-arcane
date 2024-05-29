@@ -29,7 +29,7 @@ public class PlayerController : MonoBehaviour
     private bool isDashing;
     private float dashTimeLeft;
     private float lastImageXpos;
-    //private float lastDash = -100f;
+    private float dashDirection;
     public float dashTime;
     public float dashSpeed;
     public float distanceBetweenImages;
@@ -195,7 +195,7 @@ public class PlayerController : MonoBehaviour
         float originalGravity = myBody.gravityScale;
         myBody.gravityScale = 0f;
 
-        float dashDirection = facingRight ? 1 : -1;
+        dashDirection = facingRight ? 1 : -1;
         myBody.velocity = new Vector2(dashDirection * dashSpeed, 0f);
         tr.emitting = true;
 
@@ -225,6 +225,10 @@ public class PlayerController : MonoBehaviour
         canDash = true;
     }
 
+    public int GetFacingDirection()
+    {
+        return (int)dashDirection;
+    }
     void flip(){
         facingRight = !facingRight;
         Vector3 theScale = transform.localScale;

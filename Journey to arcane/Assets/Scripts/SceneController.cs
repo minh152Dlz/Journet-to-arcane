@@ -29,6 +29,10 @@ public class SceneController : MonoBehaviour
     private void InitializeLives()
     {
         lives = 3;
+        if (RespawnCharacter.instance != null)
+        {
+            RespawnCharacter.instance.UpdateLivesText();
+        }
     }
 
     public void NextLevel()
@@ -41,6 +45,10 @@ public class SceneController : MonoBehaviour
         if (lives > 0)
         {
             lives--;
+            if (RespawnCharacter.instance != null)
+            {
+                RespawnCharacter.instance.UpdateLivesText();
+            }
         }
     }
 
