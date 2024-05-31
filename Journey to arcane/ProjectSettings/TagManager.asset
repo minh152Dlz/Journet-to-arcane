@@ -20,9 +20,9 @@ TagManager:
   - Damageable
   - Dead
   - Player
-  - 
-  - 
-  - 
+  - Obstacle
+  - Enemies
+  - Test
   - 
   - 
   - 
