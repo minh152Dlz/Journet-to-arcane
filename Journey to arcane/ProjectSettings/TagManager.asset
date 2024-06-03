@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Ground
   - Obstacle
+  - Enemy
   layers:
   - Default
   - TransparentFX
@@ -16,12 +17,12 @@ TagManager:
   - Ground
   - 
   - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Damageable
+  - Dead
+  - Player
+  - Obstacle
+  - Enemies
+  - Test
   - 
   - 
   - 
@@ -54,6 +55,9 @@ TagManager:
     locked: 0
   - name: Platforms
     uniqueID: 478441457
+    locked: 0
+  - name: Enemy
+    uniqueID: 4263956021
     locked: 0
   - name: Player
     uniqueID: 688834765

@@ -10,7 +10,8 @@ public class PlayerAfterImageSprite : MonoBehaviour
     private float alpha;
     [SerializeField]
     private float alphaSet = 0.8f;
-    private float alphaMultiplier = 0.85f;
+    [SerializeField]
+    private float alphaDecay = 0.85f;
 
     private Transform player;
 
@@ -19,7 +20,8 @@ public class PlayerAfterImageSprite : MonoBehaviour
 
     private Color color;
 
-    private void OnEnable() {
+    private void OnEnable()
+    {
         SR = GetComponent<SpriteRenderer>();
         player = GameObject.FindGameObjectWithTag("Player").transform;
         playerSR = player.GetComponent<SpriteRenderer>();
@@ -31,14 +33,16 @@ public class PlayerAfterImageSprite : MonoBehaviour
         timeActivated = Time.time;
     }
 
-    private void Update() {
-        alpha *= alphaMultiplier;
+    private void Update()
+    {
+        alpha -= alphaDecay * Time.deltaTime;
         color = new Color(1f, 1f, 1f, alpha);
         SR.color = color;
 
-        if(Time.time >= (timeActivated + activeTime))
+        if (Time.time >= (timeActivated + activeTime))
         {
             PlayerAfterImagePool.Instance.AddToPool(gameObject);
         }
+
     }
 }

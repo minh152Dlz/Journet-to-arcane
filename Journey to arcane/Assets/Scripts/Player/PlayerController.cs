@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -25,14 +25,16 @@ public class PlayerController : MonoBehaviour
     float jumpCounter;
 
     //dash
+    private bool canDash = true;
     private bool isDashing;
     private float dashTimeLeft;
     private float lastImageXpos;
-    private float lastDash = -100f;
+    private float dashDirection;
     public float dashTime;
     public float dashSpeed;
     public float distanceBetweenImages;
     public float dashCoolDown;
+    [SerializeField] private TrailRenderer tr;
 
     [Header("Wall Jump System")]
 
@@ -57,41 +59,52 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        if (isDashing)
+        {
+            return;
+        }
         CheckInput();
-        CheckDash();
         Jump();
+        if (Input.GetButtonDown("Dash") && canDash)
+        {
+            StartCoroutine(Dash());
+        }
     }
 
     private void FixedUpdate()
     {
-        Movement();
-        if(move>0 && !facingRight){
-            flip();
-        }else if (move<0 && facingRight){
-            flip();
-        }
-
-        if (myBody.velocity.x != 0)
-            myAnim.SetBool("isMove", true);
-        else
+        if (isDashing)
         {
-            myAnim.SetBool("isMove", false);
-            myAnim.SetBool("isRun", false);
+            return;
         }
-        WallJump();
+       
+            Movement();
+            if (move > 0 && !facingRight)
+            {
+                flip();
+            }
+            else if (move < 0 && facingRight)
+            {
+                flip();
+            }
 
-        myAnim.SetFloat("yVelocity", myBody.velocity.y);
+            if (myBody.velocity.x != 0)
+                myAnim.SetBool("isMove", true);
+            else
+            {
+                myAnim.SetBool("isMove", false);
+                myAnim.SetBool("isRun", false);
+            }
+            WallJump();
+
+            myAnim.SetFloat("yVelocity", myBody.velocity.y);
+ 
     }
 
     private void CheckInput()
     {
         move = Input.GetAxisRaw("Horizontal");
 
-        if(Input.GetButtonDown("Dash"))
-        {
-            if(Time.time >= (lastDash + dashCoolDown))
-            AttempToDash();
-        }
     }
 
     private void Movement()
@@ -175,38 +188,47 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void AttempToDash()
+    private IEnumerator Dash()
     {
+        canDash = false;
         isDashing = true;
+        float originalGravity = myBody.gravityScale;
+        myBody.gravityScale = 0f;
+
+        dashDirection = facingRight ? 1 : -1;
+        myBody.velocity = new Vector2(dashDirection * dashSpeed, 0f);
+        tr.emitting = true;
+
         dashTimeLeft = dashTime;
-        lastDash = Time.time;
-
-        PlayerAfterImagePool.Instance.GetFromPool();
         lastImageXpos = transform.position.x;
-    }
 
-    private void CheckDash()
-    {
-        if(isDashing)
+        while (dashTimeLeft > 0)
         {
-            if(dashTimeLeft>0)
-            {
-                myBody.velocity = new Vector2(dashSpeed, myBody.velocity.y);
-                dashTimeLeft -= Time.deltaTime;
+            myBody.velocity = new Vector2(dashSpeed * dashDirection, 0f);
+            dashTimeLeft -= Time.deltaTime;
 
-                if(Mathf.Abs(transform.position.x - lastImageXpos) > distanceBetweenImages)
-                {
-                    PlayerAfterImagePool.Instance.GetFromPool();
-                    lastImageXpos = transform.position.x;
-                }
-            }
-            if(dashTimeLeft <= 0 || isWallTouch())
+            if (Mathf.Abs(transform.position.x - lastImageXpos) > distanceBetweenImages)
             {
-                isDashing =false;
+                PlayerAfterImagePool.Instance.GetFromPool();
+                lastImageXpos = transform.position.x;
             }
+
+            yield return null;
         }
+
+        tr.emitting = false;
+        myBody.gravityScale = originalGravity;
+        isDashing = false;
+        myBody.velocity = Vector2.zero;
+
+        yield return new WaitForSeconds(dashCoolDown);
+        canDash = true;
     }
 
+    public int GetFacingDirection()
+    {
+        return (int)dashDirection;
+    }
     void flip(){
         facingRight = !facingRight;
         Vector3 theScale = transform.localScale;
