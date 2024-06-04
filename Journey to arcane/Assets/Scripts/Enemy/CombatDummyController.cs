@@ -7,7 +7,9 @@ public class CombatDummyController : MonoBehaviour
     [SerializeField]
     private float maxHealth, knockbackSpeedX, knockbackSpeedY, knockbackDuration, knockbackDeathSpeedX, knockbackDeathSpeedY, deathTorque;
     [SerializeField]
-    private bool applyKnockBack;
+    private bool applyKnockback;
+    [SerializeField]
+    private GameObject hitParticle;
 
     private float currentHealth, knockbackStart;
 
@@ -23,6 +25,7 @@ public class CombatDummyController : MonoBehaviour
     private void Start()
     {
         currentHealth = maxHealth;
+
         pc = GameObject.Find("Player").GetComponent<PlayerController>();
 
         aliveGO = transform.Find("Alive").gameObject;
@@ -31,26 +34,35 @@ public class CombatDummyController : MonoBehaviour
 
         aliveAnim = aliveGO.GetComponent<Animator>();
         rbAlive = aliveGO.GetComponent<Rigidbody2D>();
-        rbBrokenTop = rbBrokenTop.GetComponent<Rigidbody2D>();
-        rbBrokenBot = rbBrokenBot.GetComponent<Rigidbody2D>();
+        rbBrokenTop = brokenTopGO.GetComponent<Rigidbody2D>();
+        rbBrokenBot = brokenBotGO.GetComponent<Rigidbody2D>();
 
         aliveGO.SetActive(true);
         brokenTopGO.SetActive(false);
         brokenBotGO.SetActive(false);
-
     }
 
     private void Update()
     {
-        CheckKnockBack();
+        CheckKnockback();
     }
 
-    private void Damage(float amount)
+    private void Damage(float[] details)
     {
-        currentHealth -= amount;
-        playerFacingDirection = pc.GetFacingDirection();
+        currentHealth -= details[0];
 
-        if(playerFacingDirection == 1)
+        if (details[1] < aliveGO.transform.position.x)
+        {
+            playerFacingDirection = 1;
+        }
+        else
+        {
+            playerFacingDirection = -1;
+        }
+
+        Instantiate(hitParticle, aliveAnim.transform.position, Quaternion.Euler(0.0f, 0.0f, Random.Range(0.0f, 360.0f)));
+
+        if (playerFacingDirection == 1)
         {
             playerOnLeft = true;
         }
@@ -58,32 +70,33 @@ public class CombatDummyController : MonoBehaviour
         {
             playerOnLeft = false;
         }
+
         aliveAnim.SetBool("playerOnLeft", playerOnLeft);
         aliveAnim.SetTrigger("damage");
 
-        if(applyKnockBack && currentHealth > 0.0f)
+        if (applyKnockback && currentHealth > 0.0f)
         {
-            //KnockBack
-            KnockBack();
+            //Knockback
+            Knockback();
         }
-        
-        if(currentHealth <= 0.0f)
+
+        if (currentHealth <= 0.0f)
         {
             //Die
             Die();
         }
     }
 
-    private void KnockBack()
+    private void Knockback()
     {
         knockback = true;
         knockbackStart = Time.time;
         rbAlive.velocity = new Vector2(knockbackSpeedX * playerFacingDirection, knockbackSpeedY);
     }
 
-    private void CheckKnockBack()
+    private void CheckKnockback()
     {
-        if(Time.time >= knockbackStart + knockbackDuration && knockback)
+        if (Time.time >= knockbackStart + knockbackDuration && knockback)
         {
             knockback = false;
             rbAlive.velocity = new Vector2(0.0f, rbAlive.velocity.y);
@@ -101,6 +114,6 @@ public class CombatDummyController : MonoBehaviour
 
         rbBrokenBot.velocity = new Vector2(knockbackSpeedX * playerFacingDirection, knockbackSpeedY);
         rbBrokenTop.velocity = new Vector2(knockbackDeathSpeedX * playerFacingDirection, knockbackDeathSpeedY);
-        rbBrokenTop.AddTorque(deathTorque* -playerFacingDirection, ForceMode2D.Impulse);
+        rbBrokenTop.AddTorque(deathTorque * -playerFacingDirection, ForceMode2D.Impulse);
     }
 }
