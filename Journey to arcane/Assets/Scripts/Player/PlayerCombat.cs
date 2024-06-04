@@ -7,16 +7,23 @@ public class PlayerCombat : MonoBehaviour
 
     public Animator myAnim;
     public Transform attackPoint;
-    public float attackRange = 0.5f;
     public LayerMask enemyLayer;
+    
     public int attackDamage = 40;
+    public float attackRange = 0.5f;
+
+    float nextAttackTime = 0f;
 
     void Update()
     {
-        if (Input.GetButtonDown("Attack"))
+        if(Time.time >= nextAttackTime)
         {
-            Attack();
-        }
+            if (Input.GetButtonDown("Attack"))
+            {
+                Attack();
+                nextAttackTime = Time.time + 0.65f;
+            }
+        }  
     }
 
     void Attack()
