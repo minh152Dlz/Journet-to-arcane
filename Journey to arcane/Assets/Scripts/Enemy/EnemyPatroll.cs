@@ -11,38 +11,76 @@ public class EnemyPatroll : MonoBehaviour
     private Animator myAnim;
     private Transform currentPoint;
     public float speed;
+
+    // enemy chase
+    public Transform playerTransform;
+    public bool isChasing;
+    public float chaseDistance;
+
     void Start()
     {
         myBody = GetComponent<Rigidbody2D>();
         myAnim = GetComponent<Animator>();
-
         currentPoint = pointB.transform;
-        
     }
 
     // Update is called once per frame
     void Update()
     {
-        Vector2 point = currentPoint.position - transform.position;
-        if(currentPoint == pointB.transform)
+        if (Vector2.Distance(transform.position, playerTransform.position) < chaseDistance)
         {
-            myBody.velocity = new Vector2(speed, 0);
+            isChasing = true;
         }
         else
         {
-            myBody.velocity = new Vector2(-speed, 0);
+            isChasing = false;
         }
 
-        if(Vector2.Distance(transform.position, currentPoint.position) < 0.5f && currentPoint == pointB.transform)
+        if (isChasing)
         {
-            flip();
-            currentPoint = pointA.transform;
+            if (transform.position.x > playerTransform.position.x && transform.localScale.x > 0)
+            {
+                flip();
+            }
+            else if (transform.position.x < playerTransform.position.x && transform.localScale.x < 0)
+            {
+                flip();
+            }
+
+            if (transform.position.x > playerTransform.position.x)
+            {
+                transform.position += Vector3.left * speed * Time.deltaTime;
+            }
+            else if (transform.position.x < playerTransform.position.x)
+            {
+                transform.position += Vector3.right * speed * Time.deltaTime;
+            }
         }
-        
-        if(Vector2.Distance(transform.position, currentPoint.position) < 0.5f && currentPoint == pointA.transform)
+        else
         {
-            flip();
-            currentPoint = pointB.transform;
+            Vector2 point = currentPoint.position - transform.position;
+            if (currentPoint == pointB.transform)
+            {
+                myBody.velocity = new Vector2(speed, 0);
+                if (transform.localScale.x < 0)
+                {
+                    flip();
+                }
+            }
+            else
+            {
+                myBody.velocity = new Vector2(-speed, 0);
+                if (transform.localScale.x > 0)
+                {
+                    flip();
+                }
+            }
+
+            if (Vector2.Distance(transform.position, currentPoint.position) < 0.5f)
+            {
+                flip();
+                currentPoint = currentPoint == pointB.transform ? pointA.transform : pointB.transform;
+            }
         }
     }
 
