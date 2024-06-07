@@ -52,7 +52,8 @@ public class PlayerController : MonoBehaviour
         vecGravity = new Vector2(0, -Physics2D.gravity.y);
         myBody = GetComponent<Rigidbody2D> ();
         myAnim = GetComponent<Animator> ();
-        
+        myBody.collisionDetectionMode = CollisionDetectionMode2D.Continuous; // Chế độ Continuous Collision Detection
+
         facingRight = true;
     
     }
