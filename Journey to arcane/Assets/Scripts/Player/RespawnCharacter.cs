@@ -15,7 +15,6 @@ public class RespawnCharacter : MonoBehaviour
     public AudioSource respawnSound;
     public AudioSource deathSound;
     SceneController sceneController;
-    //PlayerAbility playerability;
 
     private void Awake()
     {
