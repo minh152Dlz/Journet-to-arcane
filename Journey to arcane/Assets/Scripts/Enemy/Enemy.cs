@@ -5,14 +5,18 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     public Animator myAnim;
-    public GameObject Enemy1;
+    public GameObject enemyObject;
 
     public int maxHealth = 100;
     int currentHealth;
 
     private void Start()
     {
-        Enemy1 = this.gameObject;
+        if (enemyObject == null)
+        {
+            enemyObject = this.gameObject;  // G?n ch?nh game object n?u enemyObject ch?a ???c g?n
+        }
+        
         currentHealth = maxHealth;
     }
 
@@ -20,8 +24,18 @@ public class Enemy : MonoBehaviour
     {
         currentHealth -= damage;
         Debug.Log(currentHealth);
-        //myAnim.SetBool("Hurt",true);
-        if(currentHealth < 0)
+
+        if (myAnim != null)
+        {
+            myAnim.SetTrigger("Hurt");
+            Debug.Log("Trigger 'Hurt' has been set.");
+        }
+        else
+        {
+            Debug.LogWarning("Animator not assigned in the Inspector");
+        }
+
+        if (currentHealth <= 0)
         {
             Die();
         }
@@ -30,8 +44,14 @@ public class Enemy : MonoBehaviour
     void Die()
     {
         Debug.Log("EnemyDied");
-        Enemy1.SetActive(false);
-        //this.enabled = false;
-    }
 
+        if (enemyObject != null)
+        {
+            enemyObject.SetActive(false);
+        }
+        else
+        {
+            Debug.LogWarning("Enemy object not assigned or already destroyed");
+        }
+    }
 }

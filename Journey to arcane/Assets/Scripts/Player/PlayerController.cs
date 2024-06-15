@@ -14,6 +14,7 @@ public class PlayerController : MonoBehaviour
   
     //public AudioSource jumpSound;
     //public AudioSource landingSound;
+    public state status;
     private float move;
     public float maxSpeed;
     public float groundCheckRadius;
@@ -65,11 +66,17 @@ public class PlayerController : MonoBehaviour
             return;
         }
         CheckInput();
-        Jump();
-        if (Input.GetButtonDown("Dash") && canDash)
+        if(status != state.die)
         {
-            StartCoroutine(Dash());
+            Jump();
+            Movement();
+
+            if (Input.GetButtonDown("Dash") && canDash)
+            {
+                StartCoroutine(Dash());
+            }
         }
+        
     }
 
     private void FixedUpdate()
@@ -79,7 +86,7 @@ public class PlayerController : MonoBehaviour
             return;
         }
        
-            Movement();
+            
             if (move > 0 && !facingRight)
             {
                 flip();
@@ -121,7 +128,7 @@ public class PlayerController : MonoBehaviour
             myAnim.SetBool("isRun", false);
         }
         myBody.velocity = new Vector2(move*maxSpeed, myBody.velocity.y);
-
+        status = state.normal;
     }
 
     private void Jump()
@@ -252,6 +259,12 @@ public class PlayerController : MonoBehaviour
         Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
     }
 
+   
 
+}
 
+public enum state
+{
+    normal,
+    die
 }

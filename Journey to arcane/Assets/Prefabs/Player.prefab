@@ -42,10 +42,8 @@ GameObject:
   - component: {fileID: 1740381558929630230}
   - component: {fileID: 1740381558929630229}
   - component: {fileID: 1740381558929630228}
-  - component: {fileID: 1740381558929630227}
   - component: {fileID: 1740381558929630231}
   - component: {fileID: 1740381558929630440}
-  - component: {fileID: 1740381558929630441}
   - component: {fileID: 1740381558929630442}
   - component: {fileID: 1740381558929630443}
   - component: {fileID: 4430054645782179581}
@@ -147,32 +145,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!61 &1740381558929630227
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1740381558929630226}
-  m_Enabled: 0
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0}
-    oldSize: {x: 1, y: 1.75}
-    newSize: {x: 1, y: 1.75}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1.75}
-  m_EdgeRadius: 0
 --- !u!114 &1740381558929630231
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -223,19 +195,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &1740381558929630441
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1740381558929630226}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2783dd473a0af4aa684b177debf01f25, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _stats: {fileID: 11400000, guid: 6c23f8719a3ba4ea390ce36db314e6fb, type: 2}
 --- !u!70 &1740381558929630442
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

@@ -16,7 +16,7 @@ public class EnemyPatroll : MonoBehaviour
     public Transform playerTransform;
     public bool isChasing;
     public float chaseDistance;
-
+    private bool isAttacking;
     void Start()
     {
         myBody = GetComponent<Rigidbody2D>();
@@ -27,6 +27,12 @@ public class EnemyPatroll : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (isAttacking)
+        {
+            myBody.velocity = Vector2.zero;
+            return;
+        }
+
         if (Vector2.Distance(transform.position, playerTransform.position) < chaseDistance)
         {
             isChasing = true;
@@ -96,5 +102,15 @@ public class EnemyPatroll : MonoBehaviour
         Gizmos.DrawWireSphere(pointA.transform.position, 0.5f);
         Gizmos.DrawWireSphere(pointB.transform.position, 0.5f);
         Gizmos.DrawLine(pointA.transform.position, pointB.transform.position);
+    }
+
+    public void StartAttack()
+    {
+        isAttacking = true;
+        myAnim.SetTrigger("meleeAtk"); 
+    }
+    public void FinishAttack()
+    {
+        isAttacking = false;
     }
 }
