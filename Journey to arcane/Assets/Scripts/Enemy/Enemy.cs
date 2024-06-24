@@ -14,12 +14,11 @@ public class Enemy : MonoBehaviour
     {
         if (enemyObject == null)
         {
-            enemyObject = this.gameObject;  // G?n ch?nh game object n?u enemyObject ch?a ???c g?n
+            enemyObject = this.gameObject;  // gan game object neu enemyObject chua duoc gan
         }
-        
         currentHealth = maxHealth;
     }
-
+         
     public void TakeDamage(int damage)
     {
         currentHealth -= damage;

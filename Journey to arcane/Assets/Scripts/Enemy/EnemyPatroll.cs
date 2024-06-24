@@ -17,6 +17,7 @@ public class EnemyPatroll : MonoBehaviour
     public bool isChasing;
     public float chaseDistance;
     private bool isAttacking;
+    [SerializeField] GameObject warn;
     void Start()
     {
         myBody = GetComponent<Rigidbody2D>();
@@ -36,10 +37,12 @@ public class EnemyPatroll : MonoBehaviour
         if (Vector2.Distance(transform.position, playerTransform.position) < chaseDistance)
         {
             isChasing = true;
+            warn.SetActive(true);
         }
         else
         {
             isChasing = false;
+            warn.SetActive(false);
         }
 
         if (isChasing)

@@ -75,6 +75,15 @@ public class PlayerController : MonoBehaviour
             {
                 StartCoroutine(Dash());
             }
+
+            if (move > 0 && !facingRight)
+            {
+                flip();
+            }
+            else if (move < 0 && facingRight)
+            {
+                flip();
+            }
         }
         
     }
@@ -87,14 +96,7 @@ public class PlayerController : MonoBehaviour
         }
        
             
-            if (move > 0 && !facingRight)
-            {
-                flip();
-            }
-            else if (move < 0 && facingRight)
-            {
-                flip();
-            }
+           
 
             if (myBody.velocity.x != 0)
                 myAnim.SetBool("isMove", true);
