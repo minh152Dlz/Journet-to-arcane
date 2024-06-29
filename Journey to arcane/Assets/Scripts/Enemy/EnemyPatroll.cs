@@ -33,8 +33,9 @@ public class EnemyPatroll : MonoBehaviour
             myBody.velocity = Vector2.zero;
             return;
         }
+        float distanceToPlayer = Vector2.Distance(transform.position, playerTransform.position);
 
-        if (Vector2.Distance(transform.position, playerTransform.position) < chaseDistance)
+        if (distanceToPlayer < chaseDistance && IsPlayerWithinPatrolArea())
         {
             isChasing = true;
             warn.SetActive(true);
@@ -63,6 +64,15 @@ public class EnemyPatroll : MonoBehaviour
             else if (transform.position.x < playerTransform.position.x)
             {
                 transform.position += Vector3.right * speed * Time.deltaTime;
+            }
+
+            if (transform.position.x < pointA.transform.position.x)
+            {
+                transform.position = new Vector3(pointA.transform.position.x, transform.position.y, transform.position.z);
+            }
+            else if (transform.position.x > pointB.transform.position.x)
+            {
+                transform.position = new Vector3(pointB.transform.position.x, transform.position.y, transform.position.z);
             }
         }
         else
@@ -99,7 +109,10 @@ public class EnemyPatroll : MonoBehaviour
         theScale.x *= -1;
         transform.localScale = theScale;
     }
-
+    bool IsPlayerWithinPatrolArea()
+    {
+        return playerTransform.position.x >= pointA.transform.position.x && playerTransform.position.x <= pointB.transform.position.x;
+    }
     private void OnDrawGizmos()
     {
         Gizmos.DrawWireSphere(pointA.transform.position, 0.5f);

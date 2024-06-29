@@ -16,13 +16,13 @@ public class RespawnCharacter : MonoBehaviour
     public AudioSource deathSound;
     SceneController sceneController;
     [SerializeField] PlayerController playerController;
+    [SerializeField] GameObject player;
     private void Awake()
     {
         if (instance == null)
         {
             instance = this;
         }
-        //playerability = GetComponent<PlayerAbility>();
         myBody = GetComponent<Rigidbody2D>();
         myAnim = GetComponent<Animator>();
     }
@@ -65,8 +65,9 @@ public class RespawnCharacter : MonoBehaviour
     IEnumerator Respawn(float duration)
     {
         myBody.velocity = Vector2.zero;
-
+        //player.SetActive(false);
         yield return new WaitForSeconds(duration);
+
         
         myAnim.SetTrigger("alive");
         sceneController.DecreaseLife();

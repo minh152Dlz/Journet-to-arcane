@@ -19,10 +19,6 @@ public class Boss : MonoBehaviour
 
     private bool isAttacking;
     private float originalSpeed;
-
-    //hit stop
-    private bool RestoreTime;
-    private float speedTime;
     private void Start()
     {
         maxhealth = health;
@@ -53,8 +49,7 @@ public class Boss : MonoBehaviour
             {
                 flip();
             }
-        }
-        CheckStopTime();   
+        }      
     }
 
     public void TakeDamage(int damage)
@@ -92,44 +87,6 @@ public class Boss : MonoBehaviour
             Debug.LogWarning("Enemy object not assigned or already destroyed");
         }
     }
-
-    private void CheckStopTime()
-    {
-        if (RestoreTime)
-        {
-            if(Time.timeScale < 1f)
-            {
-                Time.timeScale += Time.deltaTime * speedTime;
-            }
-            else
-            {
-                Time.timeScale = 1f;
-                RestoreTime = false;
-            }
-        }
-    }
-    public void StopTime(float ChangeTime, int RestoreSpeed, float Delay)
-    {
-        speedTime = RestoreSpeed;
-
-        if(Delay > 0)
-        {
-            StopCoroutine(StartTimeAgain(Delay));
-            StartCoroutine(StartTimeAgain(Delay));
-        }
-        else
-        {
-            RestoreTime = true;
-        }
-        Time.timeScale = ChangeTime;
-    }
-
-    IEnumerator StartTimeAgain(float amt)
-    {
-        RestoreTime = true;
-        yield return new WaitForSecondsRealtime(amt);
-    }
-
     void flip()
     {
         facingRight = !facingRight;

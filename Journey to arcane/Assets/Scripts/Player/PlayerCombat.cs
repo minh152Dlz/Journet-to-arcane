@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerCombat : MonoBehaviour
 {
@@ -14,16 +15,27 @@ public class PlayerCombat : MonoBehaviour
 
     float nextAttackTime = 0f;
 
+    //shoot
+    public Transform shootingPoint;
+    public GameObject bulletPrefab;
     void Update()
-    {
+    {     
         if(Time.time >= nextAttackTime)
         {
-            if (Input.GetButtonDown("Attack"))
-            {
-                Attack();
-                nextAttackTime = Time.time + 0.65f;
-            }
-        }  
+            
+                if (Input.GetButtonDown("Attack"))
+                {
+                    Attack();
+                    nextAttackTime = Time.time + 0.65f;
+                }
+            
+            
+                if (Keyboard.current.xKey.wasPressedThisFrame)
+                {
+                    Instantiate(bulletPrefab, shootingPoint.position, transform.rotation);
+                }
+              
+        }
     }
 
     void Attack()
@@ -51,7 +63,6 @@ public class PlayerCombat : MonoBehaviour
         //    StopTime(0.05f, 10, 0.1f);
         //}
     }
-
     private void OnDrawGizmosSelected()
     {
         if(attackPoint == null)
