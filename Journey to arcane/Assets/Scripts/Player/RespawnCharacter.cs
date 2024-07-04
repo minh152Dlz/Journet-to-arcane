@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class RespawnCharacter : MonoBehaviour
 {
     public static RespawnCharacter instance;
-    Vector2 startPos;
+    Vector2 checkpointPos;
     Rigidbody2D myBody;
 
     public TextMeshProUGUI txtLives;
@@ -17,6 +17,7 @@ public class RespawnCharacter : MonoBehaviour
     SceneController sceneController;
     [SerializeField] PlayerController playerController;
     [SerializeField] GameObject player;
+    [SerializeField] GameObject gameOver;
     private void Awake()
     {
         if (instance == null)
@@ -30,7 +31,7 @@ public class RespawnCharacter : MonoBehaviour
     private void Start()
     {
         sceneController = SceneController.instance;
-        startPos = transform.position;
+        checkpointPos = transform.position;
         UpdateLivesText();
     }
 
@@ -38,10 +39,17 @@ public class RespawnCharacter : MonoBehaviour
     {
         if (collision.CompareTag("Obstacle"))
         {
-            Die();
+            if(playerController.status != state.die)
+            {
+                Die();
+            }        
         }
     }
 
+    public void UpdateCheckpoint(Vector2 pos)
+    {
+        checkpointPos = pos;
+    }
     public void Die()
     {
         playerController.status = state.die;
@@ -54,7 +62,7 @@ public class RespawnCharacter : MonoBehaviour
         }
         else
         {
-            GameOver();
+            gameOver.SetActive(true);
         }
         //{
         //    gameObject.GetComponent<PlayerController>().enabled = false;
@@ -72,15 +80,12 @@ public class RespawnCharacter : MonoBehaviour
         myAnim.SetTrigger("alive");
         sceneController.DecreaseLife();
 
-        transform.position = startPos;
+        transform.position = checkpointPos;
         playerController.status = state.normal;
         //respawnSound.Play();
     }
 
-    private void GameOver()
-    {
-        SceneManager.LoadScene("GameOver");
-    }
+
 
     public void UpdateLivesText()
     {

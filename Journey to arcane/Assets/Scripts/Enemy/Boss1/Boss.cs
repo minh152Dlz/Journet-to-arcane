@@ -59,7 +59,7 @@ public class Boss : MonoBehaviour
         healthBar.fillAmount = Mathf.Clamp(health / maxhealth, 0, 1);
         if (myAnim != null)
         {
-            //myAnim.SetTrigger("Hurt");
+            myAnim.SetTrigger("Hurt");
             Debug.Log("Trigger 'Hurt' has been set.");
         }
         else
@@ -69,7 +69,7 @@ public class Boss : MonoBehaviour
 
         if (health <= 0)
         {
-            myAnim.SetTrigger("Dealth");
+            myAnim.SetTrigger("Death");
             StartCoroutine(Die(4.5f));
         }
     }

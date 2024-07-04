@@ -8,6 +8,8 @@ public class SceneController : MonoBehaviour
     [SerializeField] Animator transitionAnim;
     public int lives { get; private set; }
 
+    // star manager
+    private int starsCollected = 0;
     private void Awake()
     {
         if (instance == null)
@@ -26,7 +28,7 @@ public class SceneController : MonoBehaviour
         InitializeLives();
     }
 
-    private void InitializeLives()
+    public void InitializeLives()
     {
         lives = 10;
         if (RespawnCharacter.instance != null)
@@ -38,6 +40,8 @@ public class SceneController : MonoBehaviour
     public void NextLevel()
     {
         StartCoroutine(LoadLevel());
+        ResetStars();
+        
     }
 
     public void DecreaseLife()
@@ -51,7 +55,21 @@ public class SceneController : MonoBehaviour
             }
         }
     }
+    //star collector
+    public void CollectStar()
+    {
+        starsCollected++;
+    }
 
+    public int GetStarsCollected()
+    {
+        return starsCollected;
+    }
+
+    public void ResetStars()
+    {
+        starsCollected = 0;
+    }
     IEnumerator LoadLevel()
     {
         transitionAnim.SetTrigger("End");

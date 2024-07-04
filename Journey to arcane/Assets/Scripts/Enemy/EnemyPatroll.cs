@@ -59,11 +59,11 @@ public class EnemyPatroll : MonoBehaviour
 
             if (transform.position.x > playerTransform.position.x)
             {
-                transform.position += Vector3.left * speed * Time.deltaTime;
+                transform.position += Vector3.left * 6f * Time.deltaTime;
             }
             else if (transform.position.x < playerTransform.position.x)
             {
-                transform.position += Vector3.right * speed * Time.deltaTime;
+                transform.position += Vector3.right * 6f * Time.deltaTime;
             }
 
             if (transform.position.x < pointA.transform.position.x)

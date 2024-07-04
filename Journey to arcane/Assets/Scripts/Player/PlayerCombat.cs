@@ -5,11 +5,10 @@ using UnityEngine.InputSystem;
 
 public class PlayerCombat : MonoBehaviour
 {
-
     public Animator myAnim;
     public Transform attackPoint;
     public LayerMask enemyLayer;
-    
+
     public int attackDamage = 40;
     public float attackRange = 0.5f;
 
@@ -18,24 +17,32 @@ public class PlayerCombat : MonoBehaviour
     //shoot
     public Transform shootingPoint;
     public GameObject bulletPrefab;
+
     void Update()
-    {     
-        if(Time.time >= nextAttackTime)
+    {
+        if (Time.time >= nextAttackTime)
         {
-            
-                if (Input.GetButtonDown("Attack"))
+            if (Input.GetButtonDown("Attack"))
+            {
+                if (IsEnemyInRange())
                 {
                     Attack();
-                    nextAttackTime = Time.time + 0.65f;
                 }
-            
-            
-                if (Keyboard.current.xKey.wasPressedThisFrame)
+                else
                 {
-                    Instantiate(bulletPrefab, shootingPoint.position, transform.rotation);
+                    Shoot();
                 }
-              
+                nextAttackTime = Time.time + 0.65f;
+            }
+
+           
         }
+    }
+
+    bool IsEnemyInRange()
+    {
+        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayer);
+        return hitEnemies.Length > 0;
     }
 
     void Attack()
@@ -44,7 +51,7 @@ public class PlayerCombat : MonoBehaviour
 
         Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayer);
 
-        foreach(Collider2D enemy in hitEnemies)
+        foreach (Collider2D enemy in hitEnemies)
         {
             Enemy enemyComponent = enemy.GetComponent<Enemy>();
             if (enemyComponent != null)
@@ -58,14 +65,20 @@ public class PlayerCombat : MonoBehaviour
                 bossComponent.TakeDamage(attackDamage);
             }
         }
-        //if (bossComponent.TakeDamage(attackDamage))
-        //{
-        //    StopTime(0.05f, 10, 0.1f);
-        //}
     }
+
+    void Shoot()
+    {
+        if (Keyboard.current.xKey.wasPressedThisFrame)
+        {
+            Instantiate(bulletPrefab, shootingPoint.position, transform.rotation);
+        }
+       
+    }
+
     private void OnDrawGizmosSelected()
     {
-        if(attackPoint == null)
+        if (attackPoint == null)
         {
             return;
         }

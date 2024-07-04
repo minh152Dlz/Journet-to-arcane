@@ -7,9 +7,13 @@ public class HitStop : MonoBehaviour
     //hit stop
     private bool RestoreTime;
     private float speedTime;
+
+    public GameObject ImpactEffect;
+    private Animator myAnim;
     void Start()
     {
         RestoreTime = false;
+        myAnim = GetComponent<Animator>();  
     }
     private void Update()
     {
@@ -27,6 +31,7 @@ public class HitStop : MonoBehaviour
             {
                 Time.timeScale = 1f;
                 RestoreTime = false;
+                myAnim.SetBool("Damage", false);
             }
         }
     }
@@ -43,13 +48,17 @@ public class HitStop : MonoBehaviour
         {
             RestoreTime = true;
         }
+
+        Instantiate(ImpactEffect, transform.position, Quaternion.identity);
+        myAnim.SetBool("Damage", true);
+
         Time.timeScale = ChangeTime;
     }
 
     IEnumerator StartTimeAgain(float amt)
     {
-        RestoreTime = true;
         yield return new WaitForSecondsRealtime(amt);
+        RestoreTime = true;
     }
 
 }

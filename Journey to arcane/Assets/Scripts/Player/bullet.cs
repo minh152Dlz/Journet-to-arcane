@@ -17,12 +17,26 @@ public class bullet : MonoBehaviour
     }
     void OnTriggerEnter2D(Collider2D collision)
     {
-        myAnim.SetTrigger("Hit");
-        Enemy enemy = collision.GetComponent<Enemy>();
-        if(enemy != null)
+        if(collision.CompareTag("Enemy"))
         {
-            enemy.TakeDamage(damage);
+            Enemy enemy = collision.GetComponent<Enemy>();
+            if (enemy != null)
+            {
+                enemy.TakeDamage(damage);
+            }
+
+            Boss boss = collision.GetComponent<Boss>();
+            if (boss != null)
+            {
+                boss.TakeDamage(damage);
+            }
+            Destroy(gameObject);
         }
-        Destroy(gameObject);
+
+        if (collision.CompareTag("Ground"))
+        {
+            Destroy(gameObject);
+        }
     }
+       
 }

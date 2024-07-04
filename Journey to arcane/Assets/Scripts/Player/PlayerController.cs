@@ -258,6 +258,13 @@ public class PlayerController : MonoBehaviour
         return Physics2D.OverlapBox(wallCheck.position, new Vector2(0.3f, 1.4f), 0, groundLayer);
     }
 
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if(collision.gameObject.tag == "Enemy")
+        {
+            collision.gameObject.GetComponent<HitStop>().StopTime(0.05f, 10, 0.1f);
+        }
+    }
     private void OnDrawGizmos()
     {
         Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);

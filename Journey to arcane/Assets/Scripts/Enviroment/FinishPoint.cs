@@ -5,20 +5,33 @@ public class FinishPoint : MonoBehaviour
 {
     [SerializeField] bool goNextLevel;
     [SerializeField] string levelName;
+    [SerializeField] GameObject nextLevel;
+    [SerializeField] GameObject[] stars;
+    //[SerializeField] PlayerController playerController;
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Player"))
         {
-            if (goNextLevel)
+            //if (goNextLevel)
+            //{
+            //    UnlockNewLevel();
+            //    SceneController.instance.NextLevel();
+            //}
+            //else
+            //{
+            //    SceneController.instance.LoadScene(levelName);
+            //}
+            for(int i=0; i < 3; i++)
             {
-                UnlockNewLevel();
-                SceneController.instance.NextLevel();
+                stars[i].SetActive(false);
             }
-            else
+  
+            for(int i=0; i< SceneController.instance.GetStarsCollected(); i++)
             {
-                SceneController.instance.LoadScene(levelName);
+                stars[i].SetActive(true);
             }
-            
+            nextLevel.SetActive(true);
+            UnlockNewLevel();
         }
     }
 

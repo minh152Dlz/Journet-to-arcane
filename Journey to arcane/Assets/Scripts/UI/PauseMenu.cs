@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 public class PauseMenu : MonoBehaviour
 {
     [SerializeField] GameObject pauseMenu;
-
+    [SerializeField] PlayerController playerController;
 
     public void Pause()
     {
@@ -23,6 +23,11 @@ public class PauseMenu : MonoBehaviour
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         Time.timeScale = 1;
+        if (SceneController.instance != null)
+        {
+            SceneController.instance.InitializeLives();
+        }
+        playerController.status = state.normal;
     }
 
     public void Menu()

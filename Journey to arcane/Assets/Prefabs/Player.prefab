@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &202833356
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 202833357}
+  m_Layer: 11
+  m_Name: ShootingPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &202833357
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 202833356}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.65, y: 0.91, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1740381558929630230}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1740381558886325282
 GameObject:
   m_ObjectHideFlags: 0
@@ -70,6 +101,7 @@ Transform:
   - {fileID: 1740381558886325283}
   - {fileID: 1740381559501783578}
   - {fileID: 3646603014036188186}
+  - {fileID: 202833357}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -158,12 +190,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8390d43557d048039c534f9c876dc4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  jumpHeight: 5
+  jumpHeight: 7.5
   fallSpeed: 2.5
   jumpTime: 0.4
   jumpBuffer: 1
   status: 0
-  maxSpeed: 6
+  maxSpeed: 7
   groundCheckRadius: 0.3
   groundCheck: {fileID: 1740381558886325283}
   groundLayer:
@@ -216,8 +248,8 @@ MonoBehaviour:
     m_Bits: 24576
   attackDamage: 40
   attackRange: 0.5
-  shootingPoint: {fileID: 0}
-  bulletPrefab: {fileID: 0}
+  shootingPoint: {fileID: 202833357}
+  bulletPrefab: {fileID: 4648960671303823795, guid: 1246ddcae8324824ab1f6fb91f5ca1b5, type: 3}
 --- !u!70 &1740381558929630442
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -247,10 +279,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   txtLives: {fileID: 0}
-  myAnim: {fileID: 0}
+  myAnim: {fileID: 1740381558929630440}
   respawnSound: {fileID: 0}
   deathSound: {fileID: 0}
-  playerController: {fileID: 0}
+  playerController: {fileID: 1740381558929630231}
   player: {fileID: 0}
 --- !u!96 &4430054645782179581
 TrailRenderer:
@@ -273,7 +305,7 @@ TrailRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 01e5e3381dc697a48ac3363a668010b3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -294,7 +326,7 @@ TrailRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Time: 0.5
+  m_Time: 0.1
   m_Parameters:
     serializedVersion: 3
     widthMultiplier: 1
@@ -303,7 +335,7 @@ TrailRenderer:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0.5
+        value: 1
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -311,7 +343,7 @@ TrailRenderer:
         inWeight: 0.33333334
         outWeight: 0.33333334
       - serializedVersion: 3
-        time: 0.99438196
+        time: 1
         value: 0
         inSlope: 0
         outSlope: 0
@@ -325,7 +357,7 @@ TrailRenderer:
     colorGradient:
       serializedVersion: 2
       key0: {r: 1, g: 1, b: 1, a: 1}
-      key1: {r: 1, g: 1, b: 1, a: 0}
+      key1: {r: 1, g: 1, b: 1, a: 1}
       key2: {r: 0, g: 0, b: 0, a: 0}
       key3: {r: 0, g: 0, b: 0, a: 0}
       key4: {r: 0, g: 0, b: 0, a: 0}
@@ -359,7 +391,7 @@ TrailRenderer:
     generateLightingData: 0
   m_MinVertexDistance: 0.1
   m_Autodestruct: 0
-  m_Emitting: 0
+  m_Emitting: 1
 --- !u!1 &1740381559501783577
 GameObject:
   m_ObjectHideFlags: 0
@@ -415,7 +447,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4069905188553266389}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.73, y: 0.84, z: 0}
+  m_LocalPosition: {x: 0.62, y: 0.84, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
