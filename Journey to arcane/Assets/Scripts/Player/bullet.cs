@@ -30,6 +30,12 @@ public class bullet : MonoBehaviour
             {
                 boss.TakeDamage(damage);
             }
+
+            HealthWizard wizard = collision.GetComponent<HealthWizard>();
+            if (wizard != null)
+            {
+                wizard.TakeDamage(damage);
+            }
             Destroy(gameObject);
         }
 

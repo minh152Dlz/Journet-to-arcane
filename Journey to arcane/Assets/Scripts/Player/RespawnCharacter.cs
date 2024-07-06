@@ -64,10 +64,7 @@ public class RespawnCharacter : MonoBehaviour
         {
             gameOver.SetActive(true);
         }
-        //{
-        //    gameObject.GetComponent<PlayerController>().enabled = false;
-        //    playerability.playerPrefab.GetComponent<PlayerController>().enabled = true;
-        //}
+
     }
 
     IEnumerator Respawn(float duration)

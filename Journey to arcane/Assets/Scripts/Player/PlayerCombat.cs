@@ -64,6 +64,12 @@ public class PlayerCombat : MonoBehaviour
             {
                 bossComponent.TakeDamage(attackDamage);
             }
+
+            HealthWizard wizardComponent = enemy.GetComponent<HealthWizard>();
+            if (wizardComponent != null)
+            {
+                wizardComponent.TakeDamage(attackDamage);
+            }
         }
     }
 

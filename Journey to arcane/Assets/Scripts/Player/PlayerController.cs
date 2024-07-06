@@ -42,8 +42,8 @@ public class PlayerController : MonoBehaviour
     public Transform wallCheck;
     bool isSliding;
     public float wallSlidingSpeed;
-    
 
+    public ParticleController particleController;
     private Rigidbody2D myBody;
     private Animator myAnim;
     
@@ -241,6 +241,7 @@ public class PlayerController : MonoBehaviour
     }
     void flip()
     {
+        particleController.PlayTouchParticle(wallCheck.position);
         facingRight = !facingRight;
         //Vector3 theScale = transform.localScale;
         //theScale.x *= -1;
