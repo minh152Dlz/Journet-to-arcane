@@ -76,7 +76,8 @@ public class HealthWizard : MonoBehaviour
         yield return new WaitForSeconds(duration);
         star.SetActive(true);
         yield return new WaitForSeconds(duration);
-        
+        yield return new WaitForSeconds(duration);
+        gameWin.SetActive(true);
     }
 
     void Flip()
