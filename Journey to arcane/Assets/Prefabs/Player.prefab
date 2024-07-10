@@ -14975,7 +14975,7 @@ MonoBehaviour:
   respawnSound: {fileID: 0}
   deathSound: {fileID: 0}
   playerController: {fileID: 1740381558929630231}
-  player: {fileID: 0}
+  player: {fileID: 1740381558929630226}
   gameOver: {fileID: 0}
 --- !u!96 &4430054645782179581
 TrailRenderer:

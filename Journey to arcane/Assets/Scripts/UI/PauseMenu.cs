@@ -7,6 +7,7 @@ public class PauseMenu : MonoBehaviour
 {
     [SerializeField] GameObject pauseMenu;
     [SerializeField] PlayerController playerController;
+    [SerializeField] GameObject tutorial;
 
     public void Pause()
     {
@@ -30,9 +31,10 @@ public class PauseMenu : MonoBehaviour
         playerController.status = state.normal;
     }
 
-    public void Menu()
+    public void Tutorial()
     {
-        //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        pauseMenu.SetActive(false);
+        tutorial.SetActive(true);
         Time.timeScale = 1;
     }
 

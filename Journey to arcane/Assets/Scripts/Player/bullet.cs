@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 public class bullet : MonoBehaviour
 {
     public float speed;
-    public int damage = 40;
+    public int damage = 35;
     public Animator myAnim;
     private Rigidbody2D myBody;
     void Start()

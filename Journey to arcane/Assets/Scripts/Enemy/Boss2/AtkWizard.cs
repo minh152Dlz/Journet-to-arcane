@@ -47,9 +47,10 @@ public class AtkWizard : MonoBehaviour
                 transform.Translate(Vector2.right * Time.deltaTime);
             }
 
-            int randomSkillIndex = Random.Range(1, 4);
+           // int randomSkillIndex = Random.Range(1, 4);
+            int randomSkillIndex = 3;
 
-            if(healthWizard.health <= 800)
+            if (healthWizard.health <= 800)
             {
                 numberOfBullets = 30;
                 angleBetweenBullets = 12f;

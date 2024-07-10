@@ -25,14 +25,14 @@ public class MeleeEnemy : MonoBehaviour
     {
         cooldownTimer += Time.deltaTime;
 
-        //Attack only when player in sight ?
         if (PlayerInSight())
         {
             enemyPatroll.speed = 0;
-            if(cooldownTimer >= attackCooldown)
+            if (cooldownTimer >= attackCooldown)
             {
                 cooldownTimer = 0;
                 myAnim.SetTrigger("meleeAtk");
+                
                 if (enemyPatroll != null)
                 {
                     enemyPatroll.StartAttack();

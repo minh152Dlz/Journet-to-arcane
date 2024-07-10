@@ -15,10 +15,22 @@ public class Npc : MonoBehaviour
     public bool playerIsClose;
 
     private Coroutine typingCoroutine;
-
+    [SerializeField] GameObject eBtn;
+    [SerializeField] GameObject player;
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.E) && playerIsClose)
+        float distanceToPlayer = Vector2.Distance(transform.position, player.transform.position);
+
+        if (distanceToPlayer < 5f)
+        {
+            eBtn.SetActive(true);
+        }
+        else
+        {
+            eBtn.SetActive(false);
+        }
+
+            if (Input.GetKeyDown(KeyCode.E) && playerIsClose)
         {
             if (dialoguePanel.activeInHierarchy)
             {

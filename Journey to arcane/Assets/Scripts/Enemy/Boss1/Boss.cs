@@ -19,6 +19,9 @@ public class Boss : MonoBehaviour
 
     private bool isAttacking;
     private float originalSpeed;
+    [SerializeField] GameObject hitParticle;
+    [SerializeField] GameObject star;
+    [SerializeField] GameObject nextLevel;
     private void Start()
     {
         maxhealth = health;
@@ -49,6 +52,10 @@ public class Boss : MonoBehaviour
             {
                 flip();
             }
+            else if(player.position.x == transform.position.x)
+            {
+                return;
+            }
         }      
     }
 
@@ -57,6 +64,7 @@ public class Boss : MonoBehaviour
         health -= damage;
         Debug.Log(health);
         healthBar.fillAmount = Mathf.Clamp(health / maxhealth, 0, 1);
+        Instantiate(hitParticle, bossObject.transform.position, Quaternion.Euler(0.0f, 0.0f, Random.Range(0.0f, 360.0f)));
         if (myAnim != null)
         {
             myAnim.SetTrigger("Hurt");
@@ -77,6 +85,7 @@ public class Boss : MonoBehaviour
     IEnumerator Die(float duration)
     {
         Debug.Log("EnemyDied");
+        star.SetActive(true);
         yield return new WaitForSeconds(duration);
         if (bossObject != null)
         {          
@@ -86,6 +95,9 @@ public class Boss : MonoBehaviour
         {
             Debug.LogWarning("Enemy object not assigned or already destroyed");
         }
+        yield return new WaitForSeconds(duration);
+        nextLevel.SetActive(true);
+
     }
     void flip()
     {

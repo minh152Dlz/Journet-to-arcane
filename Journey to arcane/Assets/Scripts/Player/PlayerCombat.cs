@@ -17,7 +17,7 @@ public class PlayerCombat : MonoBehaviour
     //shoot
     public Transform shootingPoint;
     public GameObject bulletPrefab;
-
+    [SerializeField] GameObject hitParticle;
     void Update()
     {
         if (Time.time >= nextAttackTime)

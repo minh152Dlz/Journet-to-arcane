@@ -55,6 +55,9 @@ public class EnemyPatroll : MonoBehaviour
             else if (transform.position.x < playerTransform.position.x && transform.localScale.x < 0)
             {
                 flip();
+            }else if (transform.position.x == playerTransform.position.x)
+            {
+                return;
             }
 
             if (transform.position.x > playerTransform.position.x)
