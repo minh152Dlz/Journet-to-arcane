@@ -30,7 +30,7 @@ public class SceneController : MonoBehaviour
 
     public void InitializeLives()
     {
-        lives = 0;
+        lives = 3;
         if (RespawnCharacter.instance != null)
         {
             RespawnCharacter.instance.UpdateLivesText();

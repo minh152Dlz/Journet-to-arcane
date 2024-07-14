@@ -14942,6 +14942,7 @@ MonoBehaviour:
   attackRange: 0.5
   shootingPoint: {fileID: 202833357}
   bulletPrefab: {fileID: 4648960671303823795, guid: 1246ddcae8324824ab1f6fb91f5ca1b5, type: 3}
+  hitParticle: {fileID: 4339100441315261733, guid: ce11cb04256692c4a8a0732be44a3a52, type: 3}
 --- !u!70 &1740381558929630442
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
