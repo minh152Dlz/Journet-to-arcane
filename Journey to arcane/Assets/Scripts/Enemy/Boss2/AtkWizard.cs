@@ -47,8 +47,7 @@ public class AtkWizard : MonoBehaviour
                 transform.Translate(Vector2.right * Time.deltaTime);
             }
 
-           // int randomSkillIndex = Random.Range(1, 4);
-            int randomSkillIndex = 3;
+            int randomSkillIndex = Random.Range(1, 4);
 
             if (healthWizard.health <= 800)
             {
