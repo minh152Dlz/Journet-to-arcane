@@ -21,7 +21,8 @@ public class Boss : MonoBehaviour
     private float originalSpeed;
     [SerializeField] GameObject hitParticle;
     [SerializeField] GameObject star;
-    [SerializeField] GameObject nextLevel;
+    [SerializeField] GameObject finishPoint;
+    public bool checkDie= false;
     private void Start()
     {
         maxhealth = health;
@@ -29,7 +30,7 @@ public class Boss : MonoBehaviour
     }
     private void Update()
     {
-        if (isAttacking)
+        if (isAttacking || checkDie)
         {
             return;
         }
@@ -74,8 +75,9 @@ public class Boss : MonoBehaviour
 
         if (health <= 0)
         {
+            checkDie = true;
             myAnim.SetTrigger("Death");
-            StartCoroutine(Die(4.5f));
+            StartCoroutine(Die(8f));
         }
     }
 
@@ -84,17 +86,8 @@ public class Boss : MonoBehaviour
         Debug.Log("EnemyDied");
         star.SetActive(true);
         yield return new WaitForSeconds(duration);
-        if (bossObject != null)
-        {          
-            bossObject.SetActive(false);
-        }
-        else
-        {
-            Debug.LogWarning("Enemy object not assigned or already destroyed");
-        }
-        yield return new WaitForSeconds(duration);
-        nextLevel.SetActive(true);
 
+        finishPoint.SetActive(true);
     }
     void flip()
     {

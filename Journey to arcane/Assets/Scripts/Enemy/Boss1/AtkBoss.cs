@@ -23,6 +23,11 @@ public class AtkBoss : MonoBehaviour
 
     private void Update()
     {
+        if (boss.checkDie)
+        {
+            return;
+        }
+
         cooldownTimer += Time.deltaTime;
 
         int randomSkillIndex = Random.Range(1, 4);

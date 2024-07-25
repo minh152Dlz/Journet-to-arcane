@@ -73,9 +73,7 @@ public class HealthWizard : MonoBehaviour
             Debug.LogWarning("Enemy object not assigned or already destroyed");
         }
         yield return new WaitForSeconds(duration);
-        yield return new WaitForSeconds(duration);
         star.SetActive(true);
-        yield return new WaitForSeconds(duration);
         yield return new WaitForSeconds(duration);
         gameWin.SetActive(true);
     }
