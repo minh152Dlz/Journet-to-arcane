@@ -14881,12 +14881,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8390d43557d048039c534f9c876dc4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  jumpHeight: 7.5
+  jumpHeight: 7
   fallSpeed: 2.5
   jumpTime: 0.4
   jumpBuffer: 1
   status: 0
-  maxSpeed: 7
+  maxSpeed: 6.2
   groundCheckRadius: 0.3
   groundCheck: {fileID: 1740381558886325283}
   groundLayer:
@@ -14978,6 +14978,8 @@ MonoBehaviour:
   playerController: {fileID: 1740381558929630231}
   player: {fileID: 1740381558929630226}
   gameOver: {fileID: 0}
+  doorChain: {fileID: 0}
+  checkDoor: 0
 --- !u!96 &4430054645782179581
 TrailRenderer:
   serializedVersion: 2

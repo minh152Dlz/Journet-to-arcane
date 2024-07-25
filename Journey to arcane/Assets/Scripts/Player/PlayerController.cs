@@ -176,7 +176,7 @@ public class PlayerController : MonoBehaviour
             if (isGrounded())
             {
                 //myAnim.SetBool("isJump", false);
-                AudioManager.Instance.PlaySFX("Landing");
+                //AudioManager.Instance.PlaySFX("Landing");
 
             }
         }
