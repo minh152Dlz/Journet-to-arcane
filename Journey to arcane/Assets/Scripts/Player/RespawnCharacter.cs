@@ -18,6 +18,8 @@ public class RespawnCharacter : MonoBehaviour
     [SerializeField] PlayerController playerController;
     [SerializeField] GameObject player;
     [SerializeField] GameObject gameOver;
+    [SerializeField] Door doorChain;
+    [SerializeField] bool checkDoor = false;
     private void Awake()
     {
         if (instance == null)
@@ -54,7 +56,7 @@ public class RespawnCharacter : MonoBehaviour
     {
         playerController.status = state.die;
         //myanim.SetTrigger("white");
-        //deathSound.Play();
+        AudioManager.Instance.PlaySFX("GameOver");
         myAnim.SetTrigger("death");
         if (sceneController.lives > 0)
         {
@@ -73,16 +75,18 @@ public class RespawnCharacter : MonoBehaviour
         //player.SetActive(false);
         yield return new WaitForSeconds(duration);
 
-        
+
         myAnim.SetTrigger("alive");
         sceneController.DecreaseLife();
 
         transform.position = checkpointPos;
         playerController.status = state.normal;
-        //respawnSound.Play();
+        AudioManager.Instance.PlaySFX("Spawn");
+        if (checkDoor)
+        {
+            doorChain.myAnim.SetTrigger("Up");
+        }
     }
-
-
 
     public void UpdateLivesText()
     {

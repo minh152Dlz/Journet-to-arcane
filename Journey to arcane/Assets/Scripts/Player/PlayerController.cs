@@ -140,7 +140,7 @@ public class PlayerController : MonoBehaviour
             myBody.velocity = new Vector2(myBody.velocity.x, jumpHeight);
             isJumping = true;
             jumpCounter = 0;
-            //myAnim.SetBool("isJump", true);
+            AudioManager.Instance.PlaySFX("Jump");
 
         }
 
@@ -173,12 +173,15 @@ public class PlayerController : MonoBehaviour
         if (myBody.velocity.y < 0)
         {
             myBody.velocity -= vecGravity * fallSpeed * Time.deltaTime;
+            if (isGrounded())
+            {
+                //myAnim.SetBool("isJump", false);
+                AudioManager.Instance.PlaySFX("Landing");
+
+            }
         }
 
-        if (isGrounded())
-        {
-            //myAnim.SetBool("isJump", false);
-        }
+        
     }
     private void WallJump()
     {

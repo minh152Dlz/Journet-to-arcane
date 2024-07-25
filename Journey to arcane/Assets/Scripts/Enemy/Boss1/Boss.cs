@@ -31,11 +31,8 @@ public class Boss : MonoBehaviour
     {
         if (isAttacking)
         {
-            // Kh?ng di chuy?n khi ?ang t?n c?ng
             return;
         }
-
-        
 
         float distanceFromPlayer = Vector2.Distance(transform.position, player.position);
         Vector2 target = new Vector2(player.position.x, transform.position.y);

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Door : MonoBehaviour
 {
-    private Animator myAnim;
+    public Animator myAnim;
     private void Start()
     {
         myAnim = GetComponent<Animator>();

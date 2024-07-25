@@ -31,6 +31,7 @@ public class FinishPoint : MonoBehaviour
                 stars[i].SetActive(true);
             }
             nextLevel.SetActive(true);
+            AudioManager.Instance.musicSource.Stop();
             UnlockNewLevel();
         }
     }

@@ -53,7 +53,8 @@ public class BackGroundMenu : MonoBehaviour
     private void LateUpdate()
     {
         distance = cam.position.x - camStartPos.x;
-        for(int i =0; i< backgrounds.Length; i++)
+        transform.position = new Vector3(cam.position.x, transform.position.y, 0);
+        for (int i =0; i< backgrounds.Length; i++)
         {
             float speed = backSpeed[i] * parallaxSpeed;
             mat[i].SetTextureOffset("_MainTex", new Vector2(distance, 0) * speed);

@@ -9,7 +9,7 @@ public class PlayerCombat : MonoBehaviour
     public Transform attackPoint;
     public LayerMask enemyLayer;
 
-    public int attackDamage = 40;
+    public int attackDamage = 60;
     public float attackRange = 0.5f;
 
     float nextAttackTime = 0f;
@@ -27,10 +27,12 @@ public class PlayerCombat : MonoBehaviour
                 if (IsEnemyInRange())
                 {
                     Attack();
+                    AudioManager.Instance.PlaySFX("Hit");
                 }
                 else
                 {
                     Shoot();
+                    AudioManager.Instance.PlaySFX("Fire");
                 }
                 nextAttackTime = Time.time + 0.65f;
             }
